@@ -1,0 +1,103 @@
+NestJs
+
+가장 중요한 특징
+노드js의 express를 사용하면 자유도가 넘치는데
+NestJs 는 정해진 구조가 있음
+구조를 이해하면 백엔드를 쉽게 만들수 있음
+
+객체지향 프로그래밍
+함수형 프로그래밍
+함수 반응형 프로그래밍의 요소도 일부 사용
+
+NestJs 는 기업에 큰 중점을 둠
+좋은 구조를 갖고 있고, 기업의 프로그젝트에 적합함
+
+코드를 테스트하는 방법도 중요함
+
+코드를 테스트하는 방법
+api 를 테스트하는 방법
+배우기
+
+NestJs
+insomnia 
+
+인스톨
+npm i -g @nestjs/cli
+nest new project-nest
+
+https://github.com/devDHB/start-nest
+
+npm run start:dev
+
+http://localhost:3000/
+
+
+@@ START
+무조건 main.ts 가 있어야함
+
+@@ 데코레이터 
+데코레이터는 클래스에 함수 기능을 추가할수 있음
+클래스 위의 함수이고 클래스를 위해 움직임
+
+app.service.ts 파일에서
+화면에 보여지는 텍스트를 확인할 수 있음
+
+@@ Controllers 
+nest 앱은 main.ts 에서 시작함
+컨트롤러는 기본적으로 url을 가져오고 함수를 실행
+@get() 는 express 의 라우터와 같은 역할
+예를들어
+@Get('/hi')
+sayHi(): string {
+  return 'hihi';
+}
+
+@Post 로 바꾸면 포스트 리퀘스트가 될거임
+
+@@ Services
+브라우저에서 작동하는데 왜 서비스가 필요할까?
+NestJs 는 콘트롤러를 비지니스 로직과 구분하려고 함
+컨트롤러는 그냥 url을 가져오는 역할을 함
+
+나머지 비지니스 로직은 서비스로 감
+실제 함수들을 가지는 부분임
+
+위에서 만든 sayHi() 함수를 바꿔보자
+
+서비스에서
+@Injectable()
+export class AppService {
+  getHello(): string {
+    return 'Hello Nest!';
+  }
+  getHi(): string {
+    return 'Hi Nest';
+  }
+}
+추가하고
+
+@Get('/hi')
+sayHi(): string {
+  return this.appService.getHi();
+}
+이렇게 사용하면 됨
+
+@@ AppModule
+여기서는 우리가 하는 모든걸 import 할거임
+
+서비스는 실제로 비지니스 로직을 다룸
+
+
+@@ 실제로 만들어보자
+nest generate controller 
+nest g co
+
+
+@@ Services
+Single-responsibility principle
+하나의 모듈, 클래스 또는 함수는
+하나의 기능을 꼭 책임져야함
+
+서비스는 로직을 담당함
+nest g s
+

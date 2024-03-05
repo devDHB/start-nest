@@ -101,3 +101,80 @@ Single-responsibility principle
 서비스는 로직을 담당함
 nest g s
 
+
+@@ DTO (Data Transfer object)
+
+DTO를 쓰는 이유
+1. 코드를 간결하게 만들 수 있음
+2. NestJs 가 들어오는 쿼리에 대해 유효성을 검사할수 있게 함
+그걸 위해서 Pipe 란 걸 추가
+일반적으로 미들웨어랑 비슷
+main.ts 에 추가
+app.useGlobalPipes(new ValidationPipe());
+
+유효성 검사를 위해 설치
+npm i class-validator class-transformer
+
+
+@@ Partial Type 부분 타입
+타입을 변환시키고 사용할수있게 하는 패키지
+DTO 를 변환시켜줌
+npm i @nestjs/mapped-types
+
+
+@@ app.module 구조 개선
+지금 모듈은 controller provider 를 가지고 있음
+하지만 app.module 은 AppController 와 AppProvider 만 갖고 있어야함
+
+MoviesController MoviesService 를 
+movies.module 로 옮기는게 좋은 구성임
+
+NestJS 에서 앱은 여러개의 모듈로 구성이 되기 때문
+
+모듈 생성
+nest generate module 
+
+app.modules.ts 에 있는 컨트롤러와 서비스를 지우고
+movies.modules.ts 에 추가
+
+그럼 app.module 을 쓰고
+Controller 와 Provider 를 만들까?
+
+
+@@ 의존성 주입
+TS에서는 타입만 import 해서 사용할 수 있음
+MoviesModule 을 보면 Controller 와 Provider 를 임포트 하고있음
+Provider 가 모든 것들을 임포트해서 타입을 추가하는 것만으로 잘 작동중임
+
+@Module({
+  controllers: [MoviesController],
+  providers: [MoviesService],
+})
+프로바이더에 추가하면
+NestJS 가 MoviesService 를 임포트하고
+컨트롤러에 주입하는 형식
+
+MoviesService 에 보면 Injectable 이라는 데코레이터가 있음
+
+@@ 
+NestJS 는 expressjs 위에서 돌아감
+컨트롤러에서 req, res 객체가 필요하면 사용 가능
+
+@Get()
+getAll(@Req() req, @Res() res): Movie[] {
+
+}
+이런식으로 사용 할수있음
+하지만 Express 객체를 직접 사용하는건
+좋은 방법은 아님
+
+NestJs 는 기본적으로 Express 위에서 작동하지만
+이걸 Fastify 란 라이브러리 로 전환할 수가 있음
+Fastify 는 익스프레스보다 2배가량 빠름!!
+
+그래서 Express 객체를 직접 사용하지 않는걸 추천
+
+NestJS 만 사용한다면 Express 에서 Fastify 로 바로 전환할수 있지
+
+Express 와 Fastify 전환은 NestJS 가 알아서 해줌
+
